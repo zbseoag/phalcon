@@ -28,7 +28,7 @@ class SessionController extends ControllerBase
         $this->tag->setTitle('Sign Up/Sign In');
     }
 
-    public function indexAction(): void
+    public function index(): void
     {
         $this->tag->setDefault('email', 'demo');
         $this->tag->setDefault('password', 'phalcon');
@@ -37,7 +37,7 @@ class SessionController extends ControllerBase
     /**
      * This action authenticate and logs an user into the application
      */
-    public function startAction(): void
+    public function start(): void
     {
         if ($this->request->isPost()) {
             $email = $this->request->getPost('email');
@@ -76,7 +76,7 @@ class SessionController extends ControllerBase
     /**
      * Finishes the active session redirecting to the index
      */
-    public function endAction(): void
+    public function end(): void
     {
         $this->session->remove('auth');
         $this->flash->success('Goodbye!');

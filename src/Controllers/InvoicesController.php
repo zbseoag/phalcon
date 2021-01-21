@@ -28,14 +28,14 @@ class InvoicesController extends ControllerBase
         parent::initialize();
     }
 
-    public function indexAction(): void
+    public function index(): void
     {
     }
 
     /**
      * Edit the active user profile
      */
-    public function profileAction(): void
+    public function profile(): void
     {
         //Get session info
         $auth = $this->session->get('auth');

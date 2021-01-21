@@ -21,7 +21,7 @@ class AboutController extends ControllerBase
         $this->tag->setTitle('About us');
     }
 
-    public function indexAction(): void
+    public function index(): void
     {
     }
 }

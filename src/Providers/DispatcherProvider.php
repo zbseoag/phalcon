@@ -22,10 +22,8 @@ use Phalcon\Mvc\Dispatcher;
 /**
  * We register the events manager
  */
-class DispatcherProvider implements ServiceProviderInterface
-{
-    public function register(DiInterface $di): void
-    {
+class DispatcherProvider implements ServiceProviderInterface {
+    public function register(DiInterface $di): void {
         $di->setShared('dispatcher', function () {
 
             $manager = new Manager();
@@ -34,7 +32,7 @@ class DispatcherProvider implements ServiceProviderInterface
 
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace('Invo\Controllers');
-            //$dispatcher->setActionSuffix('');
+            $dispatcher->setActionSuffix('');//控制器后缀设置为空
             $dispatcher->setEventsManager($manager);
 
             return $dispatcher;

@@ -11,7 +11,7 @@ class IndexController extends ControllerBase {
         $this->tag->setTitle('Welcome');
     }
 
-    public function indexAction(): void{
+    public function index(): void{
 
         $this->flash->notice('This is a sample application of the Phalcon Framework.');
         //$this->view->disable();

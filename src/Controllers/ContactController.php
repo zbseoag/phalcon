@@ -23,7 +23,7 @@ class ContactController extends ControllerBase {
         $this->tag->setTitle('Contact us');
     }
 
-    public function indexAction(): void
+    public function index(): void
     {
         $this->view->form = new ContactForm;
     }
@@ -31,7 +31,7 @@ class ContactController extends ControllerBase {
     /**
      * Saves the contact information in the database
      */
-    public function sendAction(): void
+    public function send(): void
     {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([

@@ -33,7 +33,7 @@ class RegisterController extends ControllerBase
     /**
      * Action to register a new user
      */
-    public function indexAction(): void
+    public function index(): void
     {
         $form = new RegisterForm();
 

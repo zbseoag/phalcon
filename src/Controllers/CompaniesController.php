@@ -20,7 +20,7 @@ class CompaniesController extends ControllerBase
     /**
      * Shows the index action
      */
-    public function indexAction(): void
+    public function index(): void
     {
         $this->view->form = new CompaniesForm();
     }
@@ -28,7 +28,7 @@ class CompaniesController extends ControllerBase
     /**
      * Search companies based on current criteria
      */
-    public function searchAction(): void
+    public function search(): void
     {
         if ($this->request->isPost()) {
             $query = Criteria::fromInput(
@@ -70,7 +70,7 @@ class CompaniesController extends ControllerBase
     /**
      * Shows the form to create a new company
      */
-    public function newAction(): void
+    public function new(): void
     {
         $this->view->form = new CompaniesForm(null, ['edit' => true]);
     }
@@ -80,7 +80,7 @@ class CompaniesController extends ControllerBase
      *
      * @param int $id
      */
-    public function editAction($id): void
+    public function edit($id): void
     {
         $company = Companies::findFirstById($id);
         if (!$company) {
@@ -100,7 +100,7 @@ class CompaniesController extends ControllerBase
     /**
      * Creates a new company
      */
-    public function createAction(): void
+    public function create(): void
     {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -153,7 +153,7 @@ class CompaniesController extends ControllerBase
     /**
      * Saves current company in screen
      */
-    public function saveAction(): void
+    public function save(): void
     {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -219,7 +219,7 @@ class CompaniesController extends ControllerBase
      *
      * @param string $id
      */
-    public function deleteAction($id)
+    public function delete($id)
     {
         $companies = Companies::findFirstById($id);
         if (!$companies) {

@@ -34,7 +34,7 @@ class ProducttypesController extends ControllerBase
     /**
      * Shows the index action
      */
-    public function indexAction(): void
+    public function index(): void
     {
         $this->view->form = new ProductTypesForm;
     }
@@ -42,7 +42,7 @@ class ProducttypesController extends ControllerBase
     /**
      * Search producttype based on current criteria
      */
-    public function searchAction(): void
+    public function search(): void
     {
         if ($this->request->isPost()) {
             $query = Criteria::fromInput(
@@ -84,7 +84,7 @@ class ProducttypesController extends ControllerBase
     /**
      * Shows the form to create a new producttype
      */
-    public function newAction(): void
+    public function new(): void
     {
         $this->view->form = new ProductTypesForm(null, ['edit' => true]);
     }
@@ -94,7 +94,7 @@ class ProducttypesController extends ControllerBase
      *
      * @param int $id
      */
-    public function editAction($id): void
+    public function edit($id): void
     {
         $productTypes = ProductTypes::findFirstById($id);
         if (!$productTypes) {
@@ -114,7 +114,7 @@ class ProducttypesController extends ControllerBase
     /**
      * Creates a new producttype
      */
-    public function createAction(): void
+    public function create(): void
     {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -167,7 +167,7 @@ class ProducttypesController extends ControllerBase
     /**
      * Saves current producttypes in screen
      */
-    public function saveAction(): void
+    public function save(): void
     {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -232,7 +232,7 @@ class ProducttypesController extends ControllerBase
      *
      * @param int $id
      */
-    public function deleteAction($id): void
+    public function delete($id): void
     {
         $productTypes = ProductTypes::findFirstById($id);
         if (!$productTypes) {
