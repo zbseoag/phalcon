@@ -10,6 +10,7 @@ use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 
 class NotFoundPlugin extends Injectable {
+
     /**
      * This action is executed before perform any action in the application
      *
@@ -18,8 +19,8 @@ class NotFoundPlugin extends Injectable {
      * @param Exception $exception
      * @return bool
      */
-    public function beforeException(Event $event, MvcDispatcher $dispatcher, Exception $exception)
-    {
+    public function beforeException(Event $event, MvcDispatcher $dispatcher, Exception $exception) {
+
         error_log($exception->getMessage() . PHP_EOL . $exception->getTraceAsString());
 
         if ($exception instanceof DispatcherException) {
@@ -28,7 +29,7 @@ class NotFoundPlugin extends Injectable {
                 case DispatcherException::EXCEPTION_ACTION_NOT_FOUND:
                     $dispatcher->forward([
                         'controller' => 'errors',
-                        'action'     => 'show404',
+                        'action' => 'show404',
                     ]);
 
                     return false;
@@ -38,10 +39,11 @@ class NotFoundPlugin extends Injectable {
         if ($dispatcher->getControllerName() !== 'errors') {
             $dispatcher->forward([
                 'controller' => 'errors',
-                'action'     => 'show500',
+                'action' => 'show500',
             ]);
         }
 
         return !$event->isStopped();
     }
+
 }

@@ -1,30 +1,38 @@
 <?php
 declare(strict_types=1);
 
-/**
- * This file is part of the Invo.
- *
- * (c) Phalcon Team <team@phalcon.io>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Invo\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
 
-class DatabaseProvider implements ServiceProviderInterface
-{
-    public function register(DiInterface $di): void
-    {
-        $dbConfig = $di->getShared('config')->get('database')->toArray();
-        $di->setShared('db', function () use ($dbConfig) {
-            $dbClass = 'Phalcon\Db\Adapter\Pdo\\' . $dbConfig['adapter'];
-            unset($dbConfig['adapter']);
+class DatabaseProvider implements ServiceProviderInterface {
 
-            return new $dbClass($dbConfig);
+    public function register(DiInterface $di): void {
+
+        $config = $di->getShared('config')->get('database')->toArray();
+        $profiler = $di->getProfiler();
+
+        $di->setShared('db', function () use ($config, $profiler) {
+
+            $manager = new \Phalcon\Events\Manager();
+            $manager->attach('db', function($event, $connection) use ($profiler) {
+
+                if ($event->getType() == 'beforeQuery') {
+                    $profiler->startProfile($connection->getSQLStatement());
+                }
+                if ($event->getType() == 'afterQuery') {
+                    $profiler->stopProfile();
+                }
+            });
+
+            $Adapter = 'Phalcon\Db\Adapter\Pdo\\' . $config['adapter'];
+            unset($config['adapter']);
+            $connect = new $Adapter($config);
+            $connect->setEventsManager($manager);
+
+            return $connect;
         });
     }
+
 }

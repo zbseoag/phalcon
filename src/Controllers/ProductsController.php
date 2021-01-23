@@ -8,40 +8,29 @@ use Invo\Models\Products;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
-/**
- * ProductsController
- *
- * Manage CRUD operations for products
- */
-class ProductsController extends ControllerBase
-{
-    public function initialize()
-    {
-        parent::initialize();
+class ProductsController extends ControllerBase {
 
+    public function initialize() {
+
+        parent::initialize();
         $this->tag->setTitle('Manage your products');
     }
 
     /**
      * Shows the index action
      */
-    public function index(): void
-    {
+    public function index(): void {
+
         $this->view->form = new ProductsForm;
     }
 
     /**
      * Search products based on current criteria
      */
-    public function search(): void
-    {
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput(
-                $this->di,
-                Products::class,
-                $this->request->getPost()
-            );
+    public function search(): void {
 
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, Products::class, $this->request->getPost());
             $this->persistent->searchParams = $query->getParams();
         }
 
@@ -52,20 +41,16 @@ class ProductsController extends ControllerBase
 
         $products = Products::find($parameters);
         if (count($products) == 0) {
+
             $this->flash->notice('The search did not find any products');
-
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
-
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index']);
             return;
         }
 
         $paginator = new Paginator([
-            'data'  => $products,
+            'data' => $products,
             'limit' => 10,
-            'page'  => $this->request->getQuery('page', 'int', 1),
+            'page' => $this->request->getQuery('page', 'int', 1),
         ]);
 
         $this->view->page = $paginator->paginate();
@@ -74,8 +59,8 @@ class ProductsController extends ControllerBase
     /**
      * Shows the form to create a new product
      */
-    public function new(): void
-    {
+    public function new(): void {
+
         $this->view->form = new ProductsForm(null, ['edit' => true]);
     }
 
@@ -84,17 +69,12 @@ class ProductsController extends ControllerBase
      *
      * @param $id
      */
-    public function edit($id): void
-    {
+    public function edit($id): void {
+
         $product = Products::findFirstById($id);
         if (!$product) {
             $this->flash->error('Product was not found');
-
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
-
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index',]);
             return;
         }
 
@@ -104,14 +84,10 @@ class ProductsController extends ControllerBase
     /**
      * Creates a new product
      */
-    public function create(): void
-    {
-        if (!$this->request->isPost()) {
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
+    public function create(): void {
 
+        if (!$this->request->isPost()) {
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index',]);
             return;
         }
 
@@ -123,10 +99,7 @@ class ProductsController extends ControllerBase
                 $this->flash->error($message);
             }
 
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'new',
-            ]);
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'new',]);
 
             return;
         }
@@ -136,10 +109,7 @@ class ProductsController extends ControllerBase
                 $this->flash->error((string)$message);
             }
 
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'new',
-            ]);
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'new',]);
 
             return;
         }
@@ -147,23 +117,16 @@ class ProductsController extends ControllerBase
         $form->clear();
         $this->flash->success('Product was created successfully');
 
-        $this->dispatcher->forward([
-            'controller' => 'products',
-            'action'     => 'index',
-        ]);
+        $this->dispatcher->forward(['controller' => 'products', 'action' => 'index',]);
     }
 
     /**
      * Saves current product in screen
      */
-    public function save(): void
-    {
-        if (!$this->request->isPost()) {
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
+    public function save(): void {
 
+        if (!$this->request->isPost()) {
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index']);
             return;
         }
 
@@ -172,10 +135,7 @@ class ProductsController extends ControllerBase
         if (!$product) {
             $this->flash->error('Product does not exist');
 
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index']);
 
             return;
         }
@@ -191,8 +151,8 @@ class ProductsController extends ControllerBase
 
             $this->dispatcher->forward([
                 'controller' => 'products',
-                'action'     => 'edit',
-                'params'     => [$id],
+                'action' => 'edit',
+                'params' => [$id],
             ]);
 
             return;
@@ -205,8 +165,8 @@ class ProductsController extends ControllerBase
 
             $this->dispatcher->forward([
                 'controller' => 'products',
-                'action'     => 'edit',
-                'params'     => [$id],
+                'action' => 'edit',
+                'params' => [$id],
             ]);
 
             return;
@@ -217,7 +177,7 @@ class ProductsController extends ControllerBase
 
         $this->dispatcher->forward([
             'controller' => 'products',
-            'action'     => 'index',
+            'action' => 'index',
         ]);
     }
 
@@ -226,15 +186,15 @@ class ProductsController extends ControllerBase
      *
      * @param string $id
      */
-    public function delete($id): void
-    {
+    public function delete($id): void {
+
         $products = Products::findFirstById($id);
         if (!$products) {
             $this->flash->error('Product was not found');
 
             $this->dispatcher->forward([
                 'controller' => 'products',
-                'action'     => 'index',
+                'action' => 'index',
             ]);
 
             return;
@@ -245,19 +205,12 @@ class ProductsController extends ControllerBase
                 $this->flash->error($message);
             }
 
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'search',
-            ]);
-
+            $this->dispatcher->forward(['controller' => 'products', 'action' => 'search']);
             return;
         }
 
         $this->flash->success('Product was deleted');
-
-        $this->dispatcher->forward([
-            'controller' => 'products',
-            'action'     => 'index',
-        ]);
+        $this->dispatcher->forward(['controller' => 'products', 'action' => 'index']);
     }
+
 }

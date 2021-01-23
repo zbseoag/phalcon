@@ -1,24 +1,12 @@
 <?php
 declare(strict_types=1);
 
-/**
- * This file is part of the Invo.
- *
- * (c) Phalcon Team <team@phalcon.io>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Invo\Models;
 
 use Phalcon\Mvc\Model;
 
-/**
- * Products
- */
-class Products extends Model
-{
+class Products extends Model {
+
     /**
      * @var integer
      */
@@ -47,8 +35,8 @@ class Products extends Model
     /**
      * Products initializer
      */
-    public function initialize()
-    {
+    public function initialize() {
+
         $this->belongsTo(
             'product_types_id',
             ProductTypes::class,
@@ -64,8 +52,9 @@ class Products extends Model
      *
      * @return string
      */
-    public function getActiveDetail(): string
-    {
+    public function getActiveDetail(): string {
+
         return $this->active == 'Y' ? 'Yes' : 'No';
     }
+
 }

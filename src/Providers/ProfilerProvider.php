@@ -5,15 +5,15 @@ namespace Invo\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\Session\Bag;
 
-class SessionBagProvider implements ServiceProviderInterface {
+
+class ProfilerProvider implements ServiceProviderInterface {
 
     public function register(DiInterface $di): void {
 
-        $di->setShared('sessionBag', function () {
+        $di->setShared('profiler', function () {
 
-            return new Bag('bag');
+            return new \Phalcon\Db\Profiler();
         });
     }
 

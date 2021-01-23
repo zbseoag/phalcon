@@ -2,6 +2,7 @@
 
 return [
     \Invo\Providers\ConfigProvider::class,
+    \Invo\Providers\ProfilerProvider::class,
     \Invo\Providers\DatabaseProvider::class,
     \Invo\Providers\DispatcherProvider::class,
     \Invo\Providers\FlashProvider::class,

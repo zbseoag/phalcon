@@ -11,8 +11,8 @@ use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 
-class SecurityPlugin extends Injectable
-{
+class SecurityPlugin extends Injectable {
+
     /**
      * This action is executed before execute any action in the application
      *
@@ -20,36 +20,22 @@ class SecurityPlugin extends Injectable
      * @param Dispatcher $dispatcher
      * @return bool
      */
-    public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher)
-    {
-        $auth = $this->session->get('auth');
-        if (!$auth) {
-            $role = 'Guests';
-        } else {
-            $role = 'Users';
-        }
+    public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
+
+        $role = $this->session->get('auth')? 'Users' : 'Guests';
 
         $controller = $dispatcher->getControllerName();
         $action = $dispatcher->getActionName();
 
         $acl = $this->getAcl();
-
         if (!$acl->isComponent($controller)) {
-            $dispatcher->forward([
-                'controller' => 'errors',
-                'action'     => 'show404',
-            ]);
-
+            $dispatcher->forward(['controller' => 'errors', 'action' => 'show404',]);
             return false;
         }
 
         $allowed = $acl->isAllowed($role, $controller, $action);
         if (!$allowed) {
-            $dispatcher->forward([
-                'controller' => 'errors',
-                'action'     => 'show401',
-            ]);
-
+            $dispatcher->forward(['controller' => 'errors', 'action' => 'show401',]);
             $this->session->destroy();
 
             return false;
@@ -63,8 +49,9 @@ class SecurityPlugin extends Injectable
      *
      * @returns AclList
      */
-    protected function getAcl(): AclList
-    {
+    protected function getAcl(): AclList {
+
+
         if (isset($this->persistent->acl)) {
             return $this->persistent->acl;
         }
@@ -74,40 +61,23 @@ class SecurityPlugin extends Injectable
 
         // Register roles
         $roles = [
-            'users'  => new Role(
-                'Users',
-                'Member privileges, granted after sign in.'
-            ),
-            'guests' => new Role(
-                'Guests',
-                'Anyone browsing the site who is not signed in is considered to be a "Guest".'
-            )
-        ];
+            'users'     => new Role('Users', '特权'),
+            'guests'    => new Role('Guests', '客人'
+        )];
 
-        foreach ($roles as $role) {
-            $acl->addRole($role);
-        }
+        //添加角色
+        foreach ($roles as $role) $acl->addRole($role);
 
-        //Private area resources
-        $privateResources = [
-            'companies'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-            'products'     => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-            'producttypes' => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-            'invoices'     => ['index', 'profile'],
-        ];
+        $config = $this->di->getShared('config');
+
+        $privateResources = $config->acl->private->toArray();
+
         foreach ($privateResources as $resource => $actions) {
             $acl->addComponent(new Component($resource), $actions);
         }
 
-        //Public area resources
-        $publicResources = [
-            'index'      => ['index'],
-            'about'      => ['index'],
-            'register'   => ['index'],
-            'errors'     => ['show401', 'show404', 'show500'],
-            'session'    => ['index', 'register', 'start', 'end'],
-            'contact'    => ['index', 'send'],
-        ];
+        $publicResources = $config->acl->public->toArray();
+
         foreach ($publicResources as $resource => $actions) {
             $acl->addComponent(new Component($resource), $actions);
         }
@@ -128,9 +98,9 @@ class SecurityPlugin extends Injectable
             }
         }
 
-        //The acl is stored in session, APC would be useful here too
         $this->persistent->acl = $acl;
 
         return $acl;
     }
+
 }

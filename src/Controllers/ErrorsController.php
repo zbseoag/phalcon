@@ -17,27 +17,28 @@ namespace Invo\Controllers;
  *
  * Manage errors
  */
-class ErrorsController extends ControllerBase
-{
-    public function initialize()
-    {
+class ErrorsController extends ControllerBase {
+
+    public function initialize() {
+
         $this->tag->setTitle('Oops!');
 
         parent::initialize();
     }
 
-    public function show404(): void
-    {
+    public function show404(): void {
+
         $this->response->setStatusCode(404);
     }
 
-    public function show401(): void
-    {
+    public function show401(): void {
+
         $this->response->setStatusCode(401);
     }
 
-    public function show500(): void
-    {
+    public function show500(): void {
+
         $this->response->setStatusCode(500);
     }
+
 }

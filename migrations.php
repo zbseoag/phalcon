@@ -5,7 +5,6 @@ use Dotenv\Dotenv;
 use Phalcon\Config;
 
 Dotenv::createImmutable(__DIR__)->load();
-
 return new Config([
     'database' => [
         'adapter' => getenv('DB_ADAPTER'),
@@ -26,3 +25,6 @@ return new Config([
         ],
     ],
 ]);
+
+
+

@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * This file is part of the Invo.
- *
- * (c) Phalcon Team <team@phalcon.io>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Invo\Forms;
 
 use Phalcon\Forms\Element\Password;
@@ -18,29 +9,23 @@ use Phalcon\Forms\Form;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\PresenceOf;
 
-class RegisterForm extends Form
-{
+class RegisterForm extends Form {
+
     /**
      * @param null $entity
      * @param null $options
      */
-    public function initialize($entity = null, $options = null)
-    {
-        /**
-         * Name text field
-         */
+    public function initialize($entity = null, $options = null) {
+
         $name = new Text('name');
         $name->setLabel('Your Full Name');
         $name->setFilters(['striptags', 'string']);
+        $this->add($name);
         $name->addValidators([
             new PresenceOf(['message' => 'Name is required']),
         ]);
 
-        $this->add($name);
 
-        /**
-         * Username text field
-         */
         $name = new Text('username');
         $name->setLabel('Username');
         $name->setFilters(['alpha']);
@@ -85,4 +70,5 @@ class RegisterForm extends Form
 
         $this->add($repeatPassword);
     }
+
 }

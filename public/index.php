@@ -2,8 +2,10 @@
 declare(strict_types=1);
 
 use Dotenv\Dotenv;
-use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Application;
+use Phalcon\{
+    Di\FactoryDefault,
+    Mvc\Application
+};
 
 try {
 
@@ -25,15 +27,13 @@ try {
         throw new Exception('File providers.php does not exist or is not readable.');
     }
 
-    $providers = include_once $providers;
-    foreach ($providers as $provider) {
-        $di->register(new $provider());
-    }
+    foreach (include_once $providers as $item) $di->register(new $item());
 
-    (new Application($di))->handle($_SERVER['REQUEST_URI'])->send();
+    $application = new Application($di);
+    $response = $application->handle($_SERVER['REQUEST_URI']);
+    $response->send();
 
 } catch (Exception $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';
-
 }

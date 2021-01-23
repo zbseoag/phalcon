@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * This file is part of the Invo.
- *
- * (c) Phalcon Team <team@phalcon.io>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Invo\Controllers;
 
 use Invo\Forms\RegisterForm;
@@ -21,10 +12,10 @@ use Phalcon\Db\RawValue;
  *
  * Allows to register new users
  */
-class RegisterController extends ControllerBase
-{
-    public function initialize()
-    {
+class RegisterController extends ControllerBase {
+
+    public function initialize() {
+
         $this->tag->setTitle('Sign Up/Sign In');
 
         parent::initialize();
@@ -33,8 +24,8 @@ class RegisterController extends ControllerBase
     /**
      * Action to register a new user
      */
-    public function index(): void
-    {
+    public function index(): void {
+
         $form = new RegisterForm();
 
         if ($this->request->isPost()) {
@@ -57,7 +48,7 @@ class RegisterController extends ControllerBase
 
             if (!$user->save()) {
                 foreach ($user->getMessages() as $message) {
-                    $this->flash->error((string) $message);
+                    $this->flash->error((string)$message);
                 }
             } else {
                 $this->tag->setDefault('email', '');
@@ -65,15 +56,12 @@ class RegisterController extends ControllerBase
 
                 $this->flash->success('Thanks for sign-up, please log-in to start generating invoices');
 
-                $this->dispatcher->forward([
-                    'controller' => 'session',
-                    'action'     => 'index',
-                ]);
-
+                $this->dispatcher->forward(['controller' => 'session', 'action' => 'index',]);
                 return;
             }
         }
 
         $this->view->form = $form;
     }
+
 }
