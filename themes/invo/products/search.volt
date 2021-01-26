@@ -9,7 +9,7 @@
 
 {% for product in page.items %}
     {% if loop.first %}
-        <table class="table table-bordered table-striped" align="center">
+        <table class="table table-bordered table-striped">
         <thead>
         <tr>
             <th>Id</th>
@@ -34,7 +34,7 @@
         </tbody>
         <tbody>
         <tr>
-            <td colspan="7" align="right">
+            <td colspan="7">
                 <div class="btn-group">
                     {{ link_to("products/search", '<i class="icon-fast-backward"></i> First', "class": "btn") }}
                     {{ link_to("products/search?page=" ~ page.before, '<i class="icon-step-backward"></i> Previous', "class": "btn") }}

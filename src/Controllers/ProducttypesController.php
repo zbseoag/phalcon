@@ -22,7 +22,7 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
  *
  * Manage operations for product of types
  */
-class ProducttypesController extends ControllerBase
+class ProducttypesController extends Controller
 {
     public function initialize()
     {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Invo\Controllers;
 
-class IndexController extends ControllerBase {
+class IndexController extends Controller {
 
     public function initialize(){
 

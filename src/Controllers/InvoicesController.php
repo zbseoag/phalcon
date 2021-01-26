@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * This file is part of the Invo.
- *
- * (c) Phalcon Team <team@phalcon.io>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Invo\Controllers;
 
 use Invo\Models\Users;
@@ -19,35 +10,27 @@ use Invo\Models\Users;
  *
  * Manage operations for invoices
  */
-class InvoicesController extends ControllerBase
-{
-    public function initialize()
-    {
+class InvoicesController extends Controller {
+
+    public function initialize() {
+
         $this->tag->setTitle('Manage your Invoices');
 
         parent::initialize();
     }
 
-    public function index(): void
-    {
+    public function index(): void {
+
     }
 
-    /**
-     * Edit the active user profile
-     */
-    public function profile(): void
-    {
-        //Get session info
+
+    public function profile(): void {
+
         $auth = $this->session->get('auth');
 
-        //Query the active user
         $user = Users::findFirst($auth['id']);
         if (!$user) {
-            $this->dispatcher->forward([
-                'controller' => 'index',
-                'action'     => 'index',
-            ]);
-
+            $this->dispatcher->forward(['controller' => 'index', 'action' => 'index']);
             return;
         }
 
@@ -60,11 +43,12 @@ class InvoicesController extends ControllerBase
 
             if (!$user->save()) {
                 foreach ($user->getMessages() as $message) {
-                    $this->flash->error((string) $message);
+                    $this->flash->error((string)$message);
                 }
             } else {
                 $this->flash->success('Your profile information was updated successfully');
             }
         }
     }
+
 }

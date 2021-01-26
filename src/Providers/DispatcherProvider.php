@@ -20,7 +20,7 @@ class DispatcherProvider implements ServiceProviderInterface {
             //$manager->attach('dispatch:beforeExecuteRoute', new SecurityPlugin);
             $manager->attach('dispatch:beforeException', new NotFoundPlugin);
 
-            $dispatcher = new class() extends Dispatcher {
+            $dispatcher = new class extends Dispatcher {
 
                 //重写 forward 方法支持 module/controller/action 字符串
                 public function forward($forward): void {

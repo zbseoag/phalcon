@@ -6,9 +6,9 @@ namespace Invo\Controllers;
 use Invo\Forms\ProductsForm;
 use Invo\Models\Products;
 use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Paginator\Adapter\Model as Paginator;
+use Phalcon\Paginator\Adapter\Model;
 
-class ProductsController extends ControllerBase {
+class ProductsController extends Controller {
 
     public function initialize() {
 
@@ -29,30 +29,14 @@ class ProductsController extends ControllerBase {
      */
     public function search(): void {
 
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, Products::class, $this->request->getPost());
-            $this->persistent->searchParams = $query->getParams();
-        }
+        $query = Criteria::fromInput($this->di, Products::class, $this->request->get());
+        $products = Products::find($query->getParams());
 
-        $parameters = [];
-        if ($this->persistent->searchParams) {
-            $parameters = $this->persistent->searchParams;
-        }
-
-        $products = Products::find($parameters);
-        if (count($products) == 0) {
-
-            $this->flash->notice('The search did not find any products');
-            $this->dispatcher->forward(['controller' => 'products', 'action' => 'index']);
-            return;
-        }
-
-        $paginator = new Paginator([
-            'data' => $products,
+        $paginator = new \Phalcon\Paginator\Adapter\QueryBuilder([
+            'builder' => $products,
             'limit' => 10,
             'page' => $this->request->getQuery('page', 'int', 1),
         ]);
-
         $this->view->page = $paginator->paginate();
     }
 

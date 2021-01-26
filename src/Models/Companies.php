@@ -14,8 +14,8 @@ namespace Invo\Models;
 
 use Phalcon\Mvc\Model;
 
-class Companies extends Model
-{
+class Companies extends Model {
+
     /**
      * @var integer
      */
@@ -40,4 +40,5 @@ class Companies extends Model
      * @var string
      */
     public $city;
+
 }

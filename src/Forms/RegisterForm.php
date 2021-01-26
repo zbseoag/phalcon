@@ -20,27 +20,23 @@ class RegisterForm extends Form {
         $name = new Text('name');
         $name->setLabel('Your Full Name');
         $name->setFilters(['striptags', 'string']);
-        $this->add($name);
         $name->addValidators([
             new PresenceOf(['message' => 'Name is required']),
         ]);
-
+        $this->add($name);
 
         $name = new Text('username');
-        $name->setLabel('Username');
-        $name->setFilters(['alpha']);
+        $name->setLabel('Username')->setFilters(['alpha']);
         $name->addValidators([
             new PresenceOf(['message' => 'Please enter your desired user name']),
         ]);
-
         $this->add($name);
 
         /**
          * Email text field
          */
         $email = new Text('email');
-        $email->setLabel('E-Mail');
-        $email->setFilters('email');
+        $email->setLabel('E-Mail')->setFilters('email');
         $email->addValidators([
             new PresenceOf(['message' => 'E-mail is required']),
             new Email(['message' => 'E-mail is not valid']),

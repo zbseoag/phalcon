@@ -15,7 +15,6 @@ return new Config([
     'application' => [
         'viewsDir' => getenv('VIEWS_DIR'),
         'baseUri' => getenv('BASE_URI'),
-
     ],
 
     'acl' => [

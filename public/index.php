@@ -7,6 +7,14 @@ use Phalcon\{
     Mvc\Application
 };
 
+function sql($di){
+
+    $profiles = $di->get('profiler')->getProfiles();
+    if($profiles) foreach ($profiles as $profile) {
+        echo "SQL: ", $profile->getSQLStatement(), "<br>";
+    }
+}
+
 try {
 
     $rootPath = realpath('..');
@@ -27,9 +35,13 @@ try {
         throw new Exception('File providers.php does not exist or is not readable.');
     }
 
+    $debug = new \Phalcon\Debug();
+    $debug->listen();
+
     foreach (include_once $providers as $item) $di->register(new $item());
 
     $application = new Application($di);
+
     $response = $application->handle($_SERVER['REQUEST_URI']);
     $response->send();
 

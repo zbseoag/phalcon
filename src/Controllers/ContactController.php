@@ -15,7 +15,7 @@ namespace Invo\Controllers;
 use Invo\Forms\ContactForm;
 use Invo\Models\Contact;
 
-class ContactController extends ControllerBase {
+class ContactController extends Controller {
 
     public function initialize(){
 
